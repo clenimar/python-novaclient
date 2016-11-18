@@ -35,9 +35,9 @@ class AuthenticateAgainstKeystoneTests(utils.TestCase):
         return resp
 
     def test_authenticate_success(self):
-        cs = client.Client("username", "password", "project_id",
-                           utils.AUTH_URL_V2, service_type='compute',
-                           direct_use=False)
+        cs = client.Client(username="username", api_key="password",
+                           project_id="project_id", auth_url=utils.AUTH_URL_V2,
+                           service_type='compute', direct_use=False)
         resp = self.get_token()
 
         auth_response = utils.TestResponse({
@@ -83,8 +83,9 @@ class AuthenticateAgainstKeystoneTests(utils.TestCase):
         test_auth_call()
 
     def test_authenticate_failure(self):
-        cs = client.Client("username", "password", "project_id",
-                           utils.AUTH_URL_V2, direct_use=False)
+        cs = client.Client(username="username", api_key="password",
+                           project_id="project_id", auth_url=utils.AUTH_URL_V2,
+                           direct_use=False)
         resp = {"unauthorized": {"message": "Unauthorized", "code": "401"}}
         auth_response = utils.TestResponse({
             "status_code": 401,
@@ -100,9 +101,9 @@ class AuthenticateAgainstKeystoneTests(utils.TestCase):
         test_auth_call()
 
     def test_v1_auth_redirect(self):
-        cs = client.Client("username", "password", "project_id",
-                           utils.AUTH_URL_V1, service_type='compute',
-                           direct_use=False)
+        cs = client.Client(username="username", password="password",
+                           project_id="project_id", auth_url=utils.AUTH_URL_V1,
+                           service_type='compute', direct_use=False)
         dict_correct_response = self.get_token()
         correct_response = json.dumps(dict_correct_response)
         dict_responses = [
@@ -166,9 +167,9 @@ class AuthenticateAgainstKeystoneTests(utils.TestCase):
         test_auth_call()
 
     def test_v2_auth_redirect(self):
-        cs = client.Client("username", "password", "project_id",
-                           utils.AUTH_URL_V2, service_type='compute',
-                           direct_use=False)
+        cs = client.Client(username="username", api_key="password",
+                           project_id="project_id", auth_url=utils.AUTH_URL_V2,
+                           service_type='compute', direct_use=False)
         dict_correct_response = self.get_token()
         correct_response = json.dumps(dict_correct_response)
         dict_responses = [
@@ -232,9 +233,9 @@ class AuthenticateAgainstKeystoneTests(utils.TestCase):
         test_auth_call()
 
     def test_ambiguous_endpoints(self):
-        cs = client.Client("username", "password", "project_id",
-                           utils.AUTH_URL_V2, service_type='compute',
-                           direct_use=False)
+        cs = client.Client(username="username", api_key="password",
+                           project_id="project_id", auth_url=utils.AUTH_URL_V2,
+                           service_type='compute', direct_use=False)
         resp = self.get_token()
 
         # duplicate existing service
@@ -256,9 +257,9 @@ class AuthenticateAgainstKeystoneTests(utils.TestCase):
         test_auth_call()
 
     def test_authenticate_with_token_success(self):
-        cs = client.Client("username", None, "project_id",
-                           utils.AUTH_URL_V2, service_type='compute',
-                           direct_use=False)
+        cs = client.Client(username="username", api_key=None,
+                           project_id="project_id",auth_url=utils.AUTH_URL_V2,
+                           service_type='compute', direct_use=False)
         cs.client.auth_token = "FAKE_ID"
         resp = self.get_token(token_id="FAKE_ID")
         auth_response = utils.TestResponse({
@@ -300,7 +301,8 @@ class AuthenticateAgainstKeystoneTests(utils.TestCase):
             self.assertEqual(cs.client.auth_token, token_id)
 
     def test_authenticate_with_token_failure(self):
-        cs = client.Client("username", None, "project_id", utils.AUTH_URL_V2,
+        cs = client.Client(username="username", api_key=None,
+                           project_id="project_id", auth_url=utils.AUTH_URL_V2,
                            direct_use=False)
         cs.client.auth_token = "FAKE_ID"
         resp = {"unauthorized": {"message": "Unauthorized", "code": "401"}}
@@ -317,8 +319,9 @@ class AuthenticateAgainstKeystoneTests(utils.TestCase):
 
 class AuthenticationTests(utils.TestCase):
     def test_authenticate_success(self):
-        cs = client.Client("username", "password",
-                           "project_id", utils.AUTH_URL, direct_use=False)
+        cs = client.Client(username="username", api_key="password",
+                           project_id="project_id", auth_url=utils.AUTH_URL,
+                           direct_use=False)
         management_url = 'https://localhost/v1.1/443470'
         auth_response = utils.TestResponse({
             'status_code': 204,
@@ -353,8 +356,9 @@ class AuthenticationTests(utils.TestCase):
         test_auth_call()
 
     def test_authenticate_failure(self):
-        cs = client.Client("username", "password",
-                           "project_id", utils.AUTH_URL, direct_use=False)
+        cs = client.Client(username="username", api_key="password",
+                           project_id="project_id", auth_url=utils.AUTH_URL,
+                           direct_use=False)
         auth_response = utils.TestResponse({'status_code': 401})
         mock_request = mock.Mock(return_value=(auth_response))
 
@@ -365,8 +369,9 @@ class AuthenticationTests(utils.TestCase):
         test_auth_call()
 
     def test_auth_automatic(self):
-        cs = client.Client("username", "password",
-                           "project_id", utils.AUTH_URL, direct_use=False)
+        cs = client.Client(username="username", api_key="password",
+                           project_id="project_id", auth_url=utils.AUTH_URL,
+                           direct_use=False)
         http_client = cs.client
         http_client.management_url = ''
         http_client.get_service_url = mock.Mock(return_value='')
@@ -382,8 +387,9 @@ class AuthenticationTests(utils.TestCase):
         test_auth_call()
 
     def test_auth_manual(self):
-        cs = client.Client("username", "password",
-                           "project_id", utils.AUTH_URL, direct_use=False)
+        cs = client.Client(username="username", api_key="password",
+                           project_id="project_id", auth_url=utils.AUTH_URL,
+                           direct_use=False)
 
         @mock.patch.object(cs.client, 'authenticate')
         def test_auth_call(m):

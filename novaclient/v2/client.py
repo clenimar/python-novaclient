@@ -61,50 +61,70 @@ class Client(object):
       directly. It should be done via `novaclient.client.Client` interface.
     """
 
-    def __init__(self, username=None, api_key=None, project_id=None,
-                 auth_url=None, insecure=False, timeout=None,
-                 proxy_tenant_id=None, proxy_token=None, region_name=None,
-                 endpoint_type='publicURL', extensions=None,
-                 service_type='compute', service_name=None,
-                 volume_service_name=None, timings=False, bypass_url=None,
-                 os_cache=False, no_cache=True, http_log_debug=False,
+    def __init__(self,
+                 api_key=None,
+                 api_version=None,
+                 auth=None,
                  auth_token=None,
-                 cacert=None, tenant_id=None, user_id=None,
-                 connection_pool=False, session=None, auth=None,
-                 api_version=None, direct_use=True, logger=None, **kwargs):
+                 auth_url=None,
+                 bypass_url=None,
+                 cacert=None,
+                 connection_pool=False,
+                 direct_use=True,
+                 endpoint_type='publicURL',
+                 extensions=None,
+                 http_log_debug=False,
+                 insecure=False,
+                 logger=None,
+                 no_cache=True,
+                 os_cache=False,
+                 project_id=None,
+                 proxy_tenant_id=None,
+                 proxy_token=None,
+                 username=None,
+                 region_name=None,
+                 service_name=None,
+                 service_type='compute',
+                 session=None,
+                 tenant_id=None,
+                 timeout=None,
+                 timings=False,
+                 user_id=None,
+                 volume_service_name=None,
+                 **kwargs):
         """Initialization of Client object.
 
-        :param str username: Username
         :param str api_key: API Key
-        :param str project_id: Project ID
+        :param api_version: Compute API version
+        :type api_version: novaclient.api_versions.APIVersion
+        :param str auth: Auth
+        :param str auth_token: Auth token
         :param str auth_url: Auth URL
+        :param str bypass_url: Bypass URL
+        :param str cacert: cacert
+        :param bool connection_pool: Use a connection pool
+        :param direct_use: Inner variable of novaclient. Do not use it outside
+            novaclient. It's restricted.
+        :param str endpoint_type: Endpoint Type
+        :param str extensions: Extensions
+        :param bool http_log_debug: Enable debugging for HTTP connections
         :param bool insecure: Allow insecure
-        :param float timeout: API timeout, None or 0 disables
+        :param logger: Logger
+        :param bool no_cache: No cache
+        :param bool os_cache: OS cache
+        :param str project_id: Project ID
         :param str proxy_tenant_id: Tenant ID
         :param str proxy_token: Proxy Token
         :param str region_name: Region Name
-        :param str endpoint_type: Endpoint Type
-        :param str extensions: Extensions
-        :param str service_type: Service Type
         :param str service_name: Service Name
-        :param str volume_service_name: Volume Service Name
-        :param bool timings: Timings
-        :param str bypass_url: Bypass URL
-        :param bool os_cache: OS cache
-        :param bool no_cache: No cache
-        :param bool http_log_debug: Enable debugging for HTTP connections
-        :param str auth_token: Auth token
-        :param str cacert: cacert
-        :param str tenant_id: Tenant ID
-        :param str user_id: User ID
-        :param bool connection_pool: Use a connection pool
+        :param str service_type: Service Type
         :param str session: Session
-        :param str auth: Auth
-        :param api_version: Compute API version
-        :param direct_use: Inner variable of novaclient. Do not use it outside
-            novaclient. It's restricted.
-        :param logger: Logger
-        :type api_version: novaclient.api_versions.APIVersion
+        :param str tenant_id: Tenant ID
+        :param float timeout: API timeout, None or 0 disables
+        :param bool timings: Timings
+        :param str user_id: User ID
+        :param str username: Username
+        :param str volume_service_name: Volume Service Name
         """
         if direct_use:
             raise exceptions.Forbidden(
@@ -185,30 +205,30 @@ class Client(object):
         self.client = client._construct_http_client(
             username=username,
             password=password,
-            user_id=user_id,
-            project_id=project_id,
-            tenant_id=tenant_id,
-            auth_url=auth_url,
+            api_version=api_version,
+            auth=auth,
             auth_token=auth_token,
-            insecure=insecure,
-            timeout=timeout,
-            proxy_token=proxy_token,
-            proxy_tenant_id=proxy_tenant_id,
-            region_name=region_name,
-            endpoint_type=endpoint_type,
-            service_type=service_type,
-            service_name=service_name,
-            volume_service_name=volume_service_name,
-            timings=timings,
+            auth_url=auth_url,
             bypass_url=bypass_url,
-            os_cache=self.os_cache,
-            http_log_debug=http_log_debug,
             cacert=cacert,
             connection_pool=connection_pool,
-            session=session,
-            auth=auth,
-            api_version=api_version,
+            endpoint_type=endpoint_type,
+            http_log_debug=http_log_debug,
+            insecure=insecure,
             logger=logger,
+            os_cache=self.os_cache,
+            project_id=project_id,
+            proxy_tenant_id=proxy_tenant_id,
+            proxy_token=proxy_token,
+            region_name=region_name,
+            service_name=service_name,
+            service_type=service_type,
+            session=session,
+            tenant_id=tenant_id,
+            timeout=timeout,
+            timings=timings,
+            user_id=user_id,
+            volume_service_name=volume_service_name,
             **kwargs)
 
     @property
